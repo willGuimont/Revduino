@@ -16,6 +16,10 @@
     }
   ],
   "license": "GPL-3.0-only",
+  "homepage": "https://github.com/willGuimont/Revduino",
+  "dependencies": {
+    "adafruit/Adafruit BusIO": "@^1.17.4"
+  },
   "frameworks": "arduino",
   "platforms": "*",
   "headers": [

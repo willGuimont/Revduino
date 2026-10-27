@@ -1,8 +1,11 @@
 # Revduino
 
+[![CI](https://github.com/willGuimont/Revduino/actions/workflows/ci.yml/badge.svg)](https://github.com/willGuimont/Revduino/actions/workflows/ci.yml)
+[![PlatformIO Registry](https://badges.registry.platformio.org/packages/willguimont/library/Revduino.svg)](https://registry.platformio.org/libraries/willguimont/Revduino)
+
 Arduino library for non-CAN REV Robotics devices. For CAN devices, use [willGuimont/CanControl](https://github.com/willGuimont/CanControl).
 
-The librairy currently supports:
+Currently supports:
 
 - [Color Sensor V3](https://docs.revrobotics.com/rev-crossover-products/sensors/color-sensor)
 
@@ -32,8 +35,8 @@ void setup() {
 
 void loop() {
     Revduino::RawColor color;
-    if (sensor.read_raw_color(color)) {
-        // Use color.red, color.green, color.blue, color.ir.
+    if (sensor.get_raw_color(color)) {
+        // Use color.r, color.g, color.b, color.ir.
     }
     delay(100);
 }
@@ -48,31 +51,27 @@ Connect through the board's SDA/SCL pins and a common ground. Check the sensor's
 power and I/O voltage requirements before connecting it to a 5 V Arduino; use
 appropriate level shifting. Board compilation does not validate wiring.
 
-## Building examples
+## Build and test
 
-Examples use CanControl's two-level selection: `REVDUINO_MAIN` enables the
-example entry point, and one `EXAMPLE_*` flag selects the sketch. These flags
-are for building this repository, not for projects consuming the library.
-
-| Example | Selection flag | PlatformIO environments |
-| --- | --- | --- |
-| Raw RGB, infrared, and proximity | `EXAMPLE_COLOR_SENSOR` | `uno`, `mega`, `megaatmega1280` |
-| Normalized RGB | `EXAMPLE_NORMALIZED_COLOR` | `uno_normalized`, `mega_normalized`, `megaatmega1280_normalized` |
+The [color sensor example](examples/color_sensor/color_sensor.ino) prints raw
+RGB, infrared, and proximity readings. Build it for Arduino Uno or Mega:
 
 ```sh
-pio run -e uno
-pio run -e uno_normalized
-# Add -t upload to upload the selected example.
+pio run -e uno -e mega
+# Add -t upload with one environment to upload to a board.
+pio test -e native
 ```
 
-Both sketches are also available directly in Arduino IDE under `examples/`;
-no selection flags are needed there. Normalized RGB values sum to one (or zero
-for black); they are not calibrated sRGB.
+GitHub Actions builds both boards and runs native tests on every push and pull
+request. Native tests run on your computer without a board; the initial suite
+checks black-color chromaticity, not I²C communication.
 
-To add an example, put its sketch in `examples/<name>/<name>.ino`, add its
-selection flag to the exactly-one check and include branch in `src/main.cpp`,
-and add environments in `platformio.ini` using `${env.build_flags}` plus that
-flag. Add those environments to `.github/workflows/ci.yml` so CI builds them.
+Add host tests under `test/test_<name>/test_main.cpp` using Unity and the existing
+suite as a template. The native environment excludes Arduino source files.
+
+To add an example, add its sketch under `examples/`, a selection flag in
+`src/main.cpp`, and an environment extending `avr` in `platformio.ini`. Add that
+environment to the CI build matrix in `.github/workflows/ci.yml`.
 
 ## License and attribution
 
