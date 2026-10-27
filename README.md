@@ -73,10 +73,27 @@ To add an example, add its sketch under `examples/`, a selection flag in
 `src/main.cpp`, and an environment extending `avr` in `platformio.ini`. Add that
 environment to the CI build matrix in `.github/workflows/ci.yml`.
 
+### Publishing to PlatformIO Registry
+
+1. Bump `"version"` in [`library.json`](library.json).
+2. Run tests:
+   ```bash
+   pio test -e native
+   ```
+3. Log in (first time only):
+   ```bash
+   pio account login
+   ```
+4. Publish:
+   ```bash
+   pio pkg publish
+   ```
+   *(Or with token in CI: `export PLATFORMIO_AUTH_TOKEN="<token>" && pio pkg publish --no-interactive`)*
+
 ## License and attribution
 
 Revduino is independent and is not affiliated with, maintained by, or endorsed
-by REV Robotics. The Color Sensor V3 driver is adapted from the bundled REVLib
-2026.0.5 implementation under the BSD 3-Clause License; its copyright notice and
-terms are retained in the driver and [LICENSE](LICENSE). Original reference code
-and its licenses remain under `third_party/` and are not compiled into the library.
+by REV Robotics. Revduino uses the [GNU GPL v3](LICENSE). The Color Sensor V3
+driver is adapted from REVLib 2026.0.5, which carries a BSD 3-Clause notice.
+Original reference code and its notices are in `third_party/`, which is neither
+compiled into the library nor included in the PlatformIO package.
