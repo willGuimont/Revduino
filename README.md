@@ -51,26 +51,6 @@ appropriate level shifting. Board compilation does not validate wiring.
 
 ## Build and test
 
-### Reading sensor status
-
-The [status example](examples/color_sensor_status/color_sensor_status.ino)
-reads one `MainStatus` snapshot per poll and checks `ls_data_status()` and
-`ps_data_status()` independently before reading each channel. It retries failed
-initialization and reinitializes after a detected reset or a failed status/color
-read. Reinitialization restores the driver's default settings; reapply any custom
-configuration after a successful `begin()`.
-
-Reading `get_status()` clears status flags, including the power-on flag. Use
-`status.power_on_status()` from that snapshot instead of also calling
-`has_reset()`. Only inspect the snapshot when `get_status()` returns `true`.
-
-The basic example above reads without checking readiness: successful I²C reads
-can return initial zeros or repeated measurements. `get_proximity()` additionally
-returns `false` on sensor overflow and leaves its output unchanged. The status
-example reports proximity failures without treating overflow as a sensor reset.
-
-Hardware validation is pending; successful builds do not verify sensor readings.
-
 ### Build commands
 
 The [color sensor example](examples/color_sensor/color_sensor.ino) prints raw
@@ -80,11 +60,13 @@ RGB, infrared, and proximity readings. Build it for Arduino Uno or Mega:
 pio run -e uno -e mega
 # Build the status example for both boards:
 pio run -e uno_status -e mega_status
+# Build the color match example for both boards:
+pio run -e uno_match -e mega_match
 # Add -t upload with one environment to upload to a board.
 pio test -e native
 ```
 
-GitHub Actions builds both examples for both boards and runs native tests on every push and pull
+GitHub Actions builds all examples for both boards and runs native tests on every push and pull
 request. Native tests run on your computer without a board; the initial suite
 checks black-color chromaticity, not I²C communication.
 

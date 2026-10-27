@@ -21,7 +21,8 @@ namespace Revduino
                 return raw & (1u << 0);
             }
 
-            // Bit 1: true = proximity interrupt condition met; false = not met (default). Cleared by reading MAIN_STATUS.
+            // Bit 1: true = proximity interrupt condition met; false = not met (default). Cleared by reading
+            // MAIN_STATUS.
             constexpr bool ps_interrupt_status() const
             {
                 return raw & (1u << 1);
@@ -39,7 +40,8 @@ namespace Revduino
                 return raw & (1u << 3);
             }
 
-            // Bit 4: true = light sensor interrupt condition met; false = not met (default). Cleared by reading MAIN_STATUS.
+            // Bit 4: true = light sensor interrupt condition met; false = not met (default). Cleared by reading
+            // MAIN_STATUS.
             constexpr bool ls_interrupt_status() const
             {
                 return raw & (1u << 4);
