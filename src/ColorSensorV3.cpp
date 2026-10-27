@@ -108,6 +108,7 @@ namespace Revduino
 
             raw_color = RawColor(r, g, b, ir);
         }
+
         return success;
     }
 
@@ -143,15 +144,15 @@ namespace Revduino
 
     bool ColorSensorV3::get_proximity(uint16_t& prox)
     {
-        uint16_t   value   = 0;
-        const auto success = read11(Register::ProximityData, value);
+        uint8_t data[2];
+        if (!read(Register::ProximityData, data, sizeof(data)))
+            return false;
 
-        if (success)
-        {
-            prox = value;
-        }
+        if (data[1] & 0x08) // PS_DATA_1 overflow flag
+            return false;
 
-        return success;
+        prox = to_11_bit(data);
+        return true;
     }
 
     bool ColorSensorV3::set_gain(GainFactor gain)

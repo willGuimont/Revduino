@@ -11,6 +11,48 @@ namespace Revduino
     class ColorSensorV3
     {
       public:
+        struct MainStatus
+        {
+            uint8_t raw = 0;
+
+            // Bit 0: true = new proximity data; false = old data (default). Cleared by reading MAIN_STATUS.
+            constexpr bool ps_data_status() const
+            {
+                return raw & (1u << 0);
+            }
+
+            // Bit 1: true = proximity interrupt condition met; false = not met (default). Cleared by reading MAIN_STATUS.
+            constexpr bool ps_interrupt_status() const
+            {
+                return raw & (1u << 1);
+            }
+
+            // Bit 2: true = object close; false = object far (default), according to proximity thresholds.
+            constexpr bool ps_logic_status() const
+            {
+                return raw & (1u << 2);
+            }
+
+            // Bit 3: true = new light sensor data; false = old data (default). Cleared by reading MAIN_STATUS.
+            constexpr bool ls_data_status() const
+            {
+                return raw & (1u << 3);
+            }
+
+            // Bit 4: true = light sensor interrupt condition met; false = not met (default). Cleared by reading MAIN_STATUS.
+            constexpr bool ls_interrupt_status() const
+            {
+                return raw & (1u << 4);
+            }
+
+            // Bit 5: true = power-up or supply disturbance (default on first read); false = no recorded event.
+            // Interrupt thresholds reset to power-on defaults; check custom settings. Cleared by reading MAIN_STATUS.
+            constexpr bool power_on_status() const
+            {
+                return raw & (1u << 5);
+            }
+        };
+
         enum class GainFactor
         {
             G1x  = 0,
@@ -20,18 +62,32 @@ namespace Revduino
             G18x = 4
         };
 
+        /* RevLib uses
+            enum class LEDPulseFrequency
+            {
+                Pf60kHz  = 0x18,
+                Pf70kHz  = 0x40,
+                Pf80kHz  = 0x28,
+                Pf90kHz  = 0x30,
+                Pf100kHz = 0x38,
+           };
+
+           Which seems to be inconsistent with the sensor's specification
+             (https://download.mikroe.com/documents/datasheets/APDS-9151%20Datasheet.pdf, on page 18).
+
+        */
         enum class LEDPulseFrequency
         {
-            Pf60kHz  = 0x18,
+            Pf60kHz  = 0x30,
             Pf70kHz  = 0x40,
-            Pf80kHz  = 0x28,
-            Pf90kHz  = 0x30,
-            Pf100kHz = 0x38,
+            Pf80kHz  = 0x50,
+            Pf90kHz  = 0x60,
+            Pf100kHz = 0x70,
         };
 
         enum class LEDCurrent
         {
-            Pulse2mA   = 0,
+            Mr2_5mA    = 0, // 2.5 mA
             Pulse5mA   = 1,
             Pulse10mA  = 2,
             Pulse25mA  = 3,
@@ -51,13 +107,13 @@ namespace Revduino
 
         enum class ProximityMeasurementRate
         {
-            Mr6ms   = 1,
-            Mr12ms  = 2,
-            Mr25ms  = 3,
-            Mr50ms  = 4,
-            Mr100ms = 5,
-            Mr200ms = 6,
-            Mr400ms = 7,
+            Mr6_25ms = 1, // 6.25 ms
+            Mr12_5ms = 2, // 12.5 ms
+            Mr25ms   = 3,
+            Mr50ms   = 4,
+            Mr100ms  = 5,
+            Mr200ms  = 6,
+            Mr400ms  = 7,
         };
 
         enum class ColorResolution
@@ -87,6 +143,7 @@ namespace Revduino
 
         bool begin();
 
+        bool get_status(MainStatus& status);
         bool get_color(Color& color);
         bool get_raw_color(RawColor& raw_color);
         bool get_cie_color(CIEColor& cie_color);
@@ -126,42 +183,6 @@ namespace Revduino
             RGBMode               = 0x04
         };
 
-        struct MainStatus
-        {
-            uint8_t raw = 0;
-
-            constexpr bool ps_data_status() const
-            {
-                return raw & (1u << 0);
-            }
-
-            constexpr bool ps_interrupt_status() const
-            {
-                return raw & (1u << 1);
-            }
-
-            constexpr bool ps_logic_status() const
-            {
-                return raw & (1u << 2);
-            }
-
-            constexpr bool ls_data_status() const
-            {
-                return raw & (1u << 3);
-            }
-
-            constexpr bool ls_interrupt_status() const
-            {
-                return raw & (1u << 4);
-            }
-
-            constexpr bool power_on_status() const
-            {
-                return raw & (1u << 5);
-            }
-        };
-
-        bool get_status(MainStatus& status);
         bool check_device_id();
         bool init_device();
         bool read(Register reg, uint8_t* data, size_t count);

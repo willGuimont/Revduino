@@ -38,7 +38,8 @@
       "examples",
       "library.json",
       "README.md",
-      "LICENSE"
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.txt"
     ],
     "exclude": [
       "src/main.cpp"
