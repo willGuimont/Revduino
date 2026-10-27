@@ -1,18 +1,11 @@
-#include <Arduino.h>
+#if defined(REVDUINO_MAIN) && !defined(PIO_UNIT_TESTING)
 
-// put function declarations here:
-int myFunction(int, int);
+#if (defined(EXAMPLE_COLOR_SENSOR) + defined(EXAMPLE_NORMALIZED_COLOR)) != 1
+#error "Select exactly one Revduino example"
+#elif defined(EXAMPLE_COLOR_SENSOR)
+#include "../examples/color_sensor/color_sensor.ino"
+#elif defined(EXAMPLE_NORMALIZED_COLOR)
+#include "../examples/normalized_color/normalized_color.ino"
+#endif
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
-}
-
-void loop() {
-  // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
-}
+#endif

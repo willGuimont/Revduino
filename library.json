@@ -1,0 +1,43 @@
+{
+  "name": "Revduino",
+  "version": "0.1.0",
+  "description": "Arduino drivers for non-CAN REV Robotics devices.",
+  "keywords": "rev, robotics, color, sensor, i2c",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/willGuimont/Revduino"
+  },
+  "authors": [
+    {
+      "name": "William Guimont-Martin",
+      "email": "willGuimont@gmail.com",
+      "url": "https://willguimont.com/",
+      "maintainer": true
+    }
+  ],
+  "license": "GPL-3.0-only",
+  "frameworks": "arduino",
+  "platforms": "*",
+  "headers": [
+    "Revduino.h"
+  ],
+  "build": {
+    "srcFilter": [
+      "+<*>",
+      "-<main.cpp>"
+    ]
+  },
+  "export": {
+    "include": [
+      "include",
+      "src",
+      "examples",
+      "library.json",
+      "README.md",
+      "LICENSE"
+    ],
+    "exclude": [
+      "src/main.cpp"
+    ]
+  }
+}
