@@ -16,7 +16,7 @@ For PlatformIO, add this repository to your project's environment:
 
 ```ini
 lib_deps = 
-    https://github.com/willGuimont/Revduino.git
+    willguimont/Revduino@^0.1.1
 ```
 
 ```cpp
