@@ -38,7 +38,7 @@ void loop()
     }
     else
     {
-        Serial.println("Error reading Color Sensor V3");
+        Serial.println(F("Error reading Color Sensor V3"));
     }
 
     delay(100);

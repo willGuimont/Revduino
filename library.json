@@ -1,6 +1,6 @@
 {
   "name": "Revduino",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Arduino drivers for non-CAN REV Robotics devices.",
   "keywords": "rev, robotics, color, sensor, i2c",
   "repository": {
