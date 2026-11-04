@@ -1,8 +1,6 @@
 #pragma once
 
-#include <Adafruit_BusIO_Register.h>
 #include <Adafruit_I2CDevice.h>
-#include <stdint.h>
 
 namespace Revduino
 {
