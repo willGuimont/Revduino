@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [uno, mega, uno_status, mega_status, uno_match, mega_match]
+        environment: [uno, mega, uno_status, mega_status, uno_match, mega_match, uno_multiplexer, mega_multiplexer]
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v6

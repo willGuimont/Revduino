@@ -8,9 +8,12 @@ void setup()
 {
     Serial.begin(115200);
     Wire.begin();
-    ready = sensor.begin();
+    const auto error = sensor.begin();
+    ready            = error == Revduino::Error::None;
     if (!ready)
-        Serial.println(F("Color Sensor V3 initialization failed"));
+        Serial.println(Revduino::error_string(error));
+    else
+        Serial.println(F("Color Sensor V3 initialized"));
 }
 
 void loop()
@@ -21,11 +24,12 @@ void loop()
     Revduino::RawColor color;
     uint16_t           proximity;
 
-    const auto success_color     = sensor.get_raw_color(color);
-    const auto success_proximity = sensor.get_proximity(proximity);
+    const auto color_error     = sensor.get_raw_color(color);
+    const auto proximity_error = sensor.get_proximity(proximity);
 
-    if (success_color && success_proximity)
+    if (color_error == Revduino::Error::None)
     {
+        Serial.print(F("R G B IR: "));
         Serial.print(color.r);
         Serial.print(' ');
         Serial.print(color.g);
@@ -33,13 +37,17 @@ void loop()
         Serial.print(color.b);
         Serial.print(' ');
         Serial.print(color.ir);
-        Serial.print(' ');
-        Serial.println(proximity);
     }
     else
     {
-        Serial.println(F("Error reading Color Sensor V3"));
+        Serial.print(Revduino::error_string(color_error));
     }
+
+    Serial.print(F(" | Proximity: "));
+    if (proximity_error == Revduino::Error::None)
+        Serial.println(proximity);
+    else
+        Serial.println(Revduino::error_string(proximity_error));
 
     delay(100);
 }

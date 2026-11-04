@@ -16,7 +16,7 @@ For PlatformIO, add this repository to your project's environment:
 
 ```ini
 lib_deps = 
-    willguimont/Revduino@^0.2.0
+    willguimont/Revduino@^0.3.0
 ```
 
 ```cpp
@@ -26,14 +26,14 @@ Revduino::ColorSensorV3 sensor;
 
 void setup() {
     Wire.begin();
-    if (!sensor.begin()) {
+    if (sensor.begin() != Revduino::Error::None) {
         // Device missing, wrong part ID, or I²C configuration failed.
     }
 }
 
 void loop() {
     Revduino::RawColor color;
-    if (sensor.get_raw_color(color)) {
+    if (sensor.get_raw_color(color) == Revduino::Error::None) {
         // Use color.r, color.g, color.b, color.ir.
     }
     delay(100);
@@ -62,6 +62,8 @@ pio run -e uno -e mega
 pio run -e uno_status -e mega_status
 # Build the color match example for both boards:
 pio run -e uno_match -e mega_match
+# Build the color multiplexer example for both boards:
+pio run -e uno_multiplexer -e mega_multiplexer
 # Add -t upload with one environment to upload to a board.
 pio test -e native
 ```

@@ -14,10 +14,11 @@ void loop()
 {
     if (!ready)
     {
-        ready = sensor.begin();
+        const auto error = sensor.begin();
+        ready            = error == Revduino::Error::None;
         if (!ready)
         {
-            Serial.println(F("Color Sensor V3 initialization failed; retrying"));
+            Serial.println(Revduino::error_string(error));
             delay(1000);
         }
         return;
@@ -26,9 +27,10 @@ void loop()
     delay(10);
     Revduino::ColorSensorV3::MainStatus status;
     // Reading status clears flags, so handle both channels from this snapshot.
-    if (!sensor.get_status(status))
+    const auto status_error = sensor.get_status(status);
+    if (status_error != Revduino::Error::None)
     {
-        Serial.println(F("Status read failed; reinitializing"));
+        Serial.println(Revduino::error_string(status_error));
         ready = false;
         return;
     }
@@ -50,7 +52,8 @@ void loop()
     if (status.ls_data_status())
     {
         Revduino::RawColor color;
-        if (sensor.get_raw_color(color))
+        const auto         color_error = sensor.get_raw_color(color);
+        if (color_error == Revduino::Error::None)
         {
             Serial.print(F("RGB IR: "));
             Serial.print(color.r);
@@ -63,7 +66,7 @@ void loop()
         }
         else
         {
-            Serial.println(F("Color read failed; reinitializing"));
+            Serial.println(Revduino::error_string(color_error));
             ready = false;
             return;
         }
@@ -73,15 +76,16 @@ void loop()
     {
         // Near/far is threshold-based, not a calibrated distance measurement.
         Serial.println(status.ps_logic_status() ? F("Object close") : F("Object far"));
-        uint16_t proximity;
-        if (sensor.get_proximity(proximity))
+        uint16_t   proximity;
+        const auto proximity_error = sensor.get_proximity(proximity);
+        if (proximity_error == Revduino::Error::None)
         {
             Serial.print(F("Proximity: "));
             Serial.println(proximity);
         }
         else
         {
-            Serial.println(F("Proximity read failed or overflowed"));
+            Serial.println(Revduino::error_string(proximity_error));
         }
     }
 }

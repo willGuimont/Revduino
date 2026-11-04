@@ -21,9 +21,10 @@ void setup()
     color_matcher.add_color(RED_TARGET);
     color_matcher.add_color(YELLOW_TARGET);
 
-    ready = sensor.begin();
+    const auto error = sensor.begin();
+    ready            = error == Revduino::Error::None;
     if (!ready)
-        Serial.println(F("Color Sensor V3 initialization failed"));
+        Serial.println(Revduino::error_string(error));
 }
 
 void loop()
@@ -32,9 +33,10 @@ void loop()
         return;
 
     Revduino::Color detected_color;
-    if (!sensor.get_color(detected_color))
+    const auto      color_error = sensor.get_color(detected_color);
+    if (color_error != Revduino::Error::None)
     {
-        Serial.println(F("Error reading Color Sensor V3"));
+        Serial.println(Revduino::error_string(color_error));
         delay(100);
         return;
     }

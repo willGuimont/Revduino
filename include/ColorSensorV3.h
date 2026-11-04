@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Color.h"
+#include "Error.h"
 
 #include <Adafruit_BusIO_Register.h>
 #include <Adafruit_I2CDevice.h>
@@ -143,22 +144,22 @@ namespace Revduino
         ColorSensorV3(ColorSensorV3&&)            = default;
         ColorSensorV3& operator=(ColorSensorV3&&) = default;
 
-        bool begin();
+        Error begin();
 
-        bool get_status(MainStatus& status);
-        bool get_color(Color& color);
-        bool get_raw_color(RawColor& raw_color);
-        bool get_cie_color(CIEColor& cie_color);
-        bool get_ir(float& ir);
-        bool get_proximity(uint16_t& prox);
+        Error get_status(MainStatus& status);
+        Error get_color(Color& color);
+        Error get_raw_color(RawColor& raw_color);
+        Error get_cie_color(CIEColor& cie_color);
+        Error get_ir(float& ir);
+        Error get_proximity(uint16_t& prox);
 
-        bool set_gain(GainFactor gain);
-        bool configure_proximity_sensor_led(LEDPulseFrequency freq, LEDCurrent current, uint8_t pulses);
-        bool configure_proximity_sensor(ProximityResolution res, ProximityMeasurementRate rate);
-        bool configure_color_sensor(ColorResolution res, ColorMeasurementRate rate);
+        Error set_gain(GainFactor gain);
+        Error configure_proximity_sensor_led(LEDPulseFrequency freq, LEDCurrent current, uint8_t pulses);
+        Error configure_proximity_sensor(ProximityResolution res, ProximityMeasurementRate rate);
+        Error configure_color_sensor(ColorResolution res, ColorMeasurementRate rate);
 
-        bool has_reset();
-        bool is_connected();
+        Error has_reset(bool& reset);
+        Error is_connected();
 
       private:
         enum class Register
@@ -185,13 +186,13 @@ namespace Revduino
             RGBMode               = 0x04
         };
 
-        bool check_device_id();
-        bool init_device();
-        bool read(Register reg, uint8_t* data, size_t count);
-        bool write8(Register reg, uint8_t value);
-        bool read8(Register reg, uint8_t& value);
-        bool read11(Register reg, uint16_t& value);
-        bool read20(Register reg, uint32_t& value);
+        Error check_device_id();
+        Error init_device();
+        Error read(Register reg, uint8_t* data, size_t count);
+        Error write8(Register reg, uint8_t value);
+        Error read8(Register reg, uint8_t& value);
+        Error read11(Register reg, uint16_t& value);
+        Error read20(Register reg, uint32_t& value);
 
         uint16_t to_11_bit(uint8_t* data);
         uint32_t to_20_bit(uint8_t* data);

@@ -6,23 +6,23 @@ namespace Revduino
 
     Multiplexer::Multiplexer(TwoWire& wire) : i2c_dev(ADDRESS, &wire) {}
 
-    bool Multiplexer::begin()
+    Error Multiplexer::begin()
     {
         if (!i2c_dev.begin())
-            return false;
+            return Error::I2C;
 
-        return true;
+        return Error::None;
     }
 
-    bool Multiplexer::select(uint8_t port)
+    Error Multiplexer::select(uint8_t port)
     {
         if (port > 7)
-            return;
-        uint8_t data[] = {1 << port};
-        i2c_dev.write(data, sizeof(data));
+            return Error::InvalidPort;
+        uint8_t data[] = {static_cast<uint8_t>(1 << port)};
+        return i2c_dev.write(data, sizeof(data)) ? Error::None : Error::I2C;
     }
 
-    bool Multiplexer::stop()
+    Error Multiplexer::stop()
     {
         return select(0);
     }
