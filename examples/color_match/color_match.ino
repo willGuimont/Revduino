@@ -7,7 +7,7 @@ constexpr Revduino::Color GREEN_TARGET(0.197f, 0.561f, 0.240f);
 constexpr Revduino::Color RED_TARGET(0.561f, 0.232f, 0.114f);
 constexpr Revduino::Color YELLOW_TARGET(0.361f, 0.524f, 0.113f);
 
-Revduino::ColorSensorV3 sensor;
+Revduino::ColorSensorV3 sensor(Wire);
 Revduino::ColorMatch<4> color_matcher;
 bool                    ready = false;
 

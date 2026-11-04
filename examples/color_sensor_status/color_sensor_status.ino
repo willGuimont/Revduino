@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Revduino.h>
 
-Revduino::ColorSensorV3 sensor;
+Revduino::ColorSensorV3 sensor(Wire);
 bool                    ready = false;
 
 void setup()
