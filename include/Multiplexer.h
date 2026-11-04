@@ -13,6 +13,7 @@ namespace Revduino
 
         bool begin();
         bool select(uint8_t port);
+        bool stop();
 
       private:
         Adafruit_I2CDevice i2c_dev;

@@ -21,4 +21,9 @@ namespace Revduino
         uint8_t data[] = {1 << port};
         i2c_dev.write(data, sizeof(data));
     }
+
+    bool Multiplexer::stop()
+    {
+        return select(0);
+    }
 } // namespace Revduino

@@ -20,7 +20,7 @@ void loop()
     if (!ready)
         return;
 
-    multiplexer.select(0);
+    multiplexer.select(1);
 
     Revduino::RawColor color;
     uint16_t           proximity;
