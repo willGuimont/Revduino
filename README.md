@@ -9,6 +9,11 @@ Currently supports:
 
 - [Color Sensor V3](https://docs.revrobotics.com/rev-crossover-products/sensors/color-sensor)
   - Based on the [APDS-9151 by Broadcom](https://download.mikroe.com/documents/datasheets/APDS-9151%20Datasheet.pdf)
+- [TCA9548A 1-to-8 I²C multiplexer](https://learn.adafruit.com/adafruit-tca9548a-1-to-8-i2c-multiplexer-breakout/overview)
+  (Adafruit breakout and generic TCA9548A boards)
+  - `select(port)` enables port 0–7; `stop()` disables every port
+  - Address `0x70` by default; pull A0–A2 high to use `0x71`–`0x77` and pass it
+    to the constructor: `Revduino::Multiplexer multiplexer(Wire, 0x71);`
 
 ## Install and use
 

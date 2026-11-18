@@ -10,7 +10,8 @@ namespace Revduino
         I2C,
         WrongDeviceId,
         ProximityOverflow,
-        InvalidPort,
+        InvalidMultiplexerPort,
+        InvalidMultiplexerAddress,
     };
 
     inline const char* error_string(Error error)
@@ -25,8 +26,10 @@ namespace Revduino
             return "Unexpected sensor part ID";
         case Error::ProximityOverflow:
             return "Proximity overflow";
-        case Error::InvalidPort:
+        case Error::InvalidMultiplexerPort:
             return "Invalid multiplexer port (expected 0-7)";
+        case Error::InvalidMultiplexerAddress:
+            return "Invalid multiplexer address (expected 0x70-0x77)";
         }
         return "Unknown error";
     }
