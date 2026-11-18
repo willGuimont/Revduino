@@ -5,13 +5,17 @@ Revduino::ColorSensorV3 sensor(Wire);
 Revduino::Multiplexer   multiplexer(Wire);
 bool                    ready = false;
 
+// Multiplexer port (0-7) the sensor is wired to (SDx/SCx on the board).
+// Run the multiplexer_scanner example to find it.
+static constexpr uint8_t SENSOR_PORT = 0;
+
 void setup()
 {
     Serial.begin(115200);
     Wire.begin();
     auto error = multiplexer.begin();
     if (error == Revduino::Error::None)
-        error = multiplexer.select(1);
+        error = multiplexer.select(SENSOR_PORT);
     if (error == Revduino::Error::None)
         error = sensor.begin();
     ready = error == Revduino::Error::None;

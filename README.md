@@ -64,6 +64,8 @@ pio run -e uno_status -e mega_status
 pio run -e uno_match -e mega_match
 # Build the color multiplexer example for both boards:
 pio run -e uno_multiplexer -e mega_multiplexer
+# Build the multiplexer wiring scanner for both boards:
+pio run -e uno_scanner -e mega_scanner
 # Add -t upload with one environment to upload to a board.
 pio test -e native
 ```

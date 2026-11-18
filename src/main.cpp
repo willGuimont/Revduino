@@ -1,7 +1,7 @@
 #if defined(REVDUINO_MAIN) && !defined(PIO_UNIT_TESTING)
 
 #if (defined(EXAMPLE_COLOR_SENSOR) + defined(EXAMPLE_COLOR_SENSOR_STATUS) + defined(EXAMPLE_COLOR_MATCH) +             \
-     defined(EXAMPLE_COLOR_MULTIPLEXER)) != 1
+     defined(EXAMPLE_COLOR_MULTIPLEXER) + defined(EXAMPLE_MULTIPLEXER_SCANNER)) != 1
 #error "Select exactly one Revduino example"
 #elif defined(EXAMPLE_COLOR_SENSOR)
 #include "../examples/color_sensor/color_sensor.ino"
@@ -11,6 +11,8 @@
 #include "../examples/color_match/color_match.ino"
 #elif defined(EXAMPLE_COLOR_MULTIPLEXER)
 #include "../examples/color_multiplexer/color_multiplexer.ino"
+#elif defined(EXAMPLE_MULTIPLEXER_SCANNER)
+#include "../examples/multiplexer_scanner/multiplexer_scanner.ino"
 #endif
 
 #endif

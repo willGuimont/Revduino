@@ -24,6 +24,7 @@ namespace Revduino
 
     Error Multiplexer::stop()
     {
-        return select(0);
+        uint8_t data[] = {0};
+        return i2c_dev.write(data, sizeof(data)) ? Error::None : Error::I2C;
     }
 } // namespace Revduino
